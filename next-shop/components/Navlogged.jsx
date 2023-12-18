@@ -4,7 +4,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Input,
   DropdownItem,
   DropdownTrigger,
@@ -14,9 +13,20 @@ import {
 } from "@nextui-org/react";
 import { AcmeLogo } from "./buttons/AcmeLogo.jsx";
 import { SearchIcon } from "./buttons/SearchIcon.jsx";
+import Link from "next/link";
 import { shopName } from "@/lib/constants.js";
+// import { signIn, signOut, useSession } from "next-auth/react";
 
-export default function Nav() {
+export default async function Nav() {
+  // const useSession = dynamic(
+  //   () => import("next-auth/react").then((mod) => mod.useSession),
+  //   { ssr: false }
+  // );
+  // const { data: session } = useSession();
+
+  // if (session) {
+  //   return <>console.log(session.user.email);</>;
+  // }
   return (
     <Navbar isBordered>
       <NavbarContent justify="start">

@@ -1,8 +1,6 @@
-// app/providers.tsx
 "use client";
 
-import { NextUIProvider } from "@nextui-org/react";
-
-export function Providers({ children }) {
-  return <NextUIProvider>{children}</NextUIProvider>;
-}
+import { SessionProvider } from "next-auth/react";
+export const AuthProvider = ({ children }) => {
+  return <SessionProvider>{children}</SessionProvider>;
+};

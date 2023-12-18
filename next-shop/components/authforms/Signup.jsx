@@ -1,8 +1,63 @@
+"use client";
 import { shopName } from "@/lib/constants";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
+  const [name, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+
+    if (!name || !email || !password) {
+      setError("All fields are necessary.");
+      return;
+    }
+
+    try {
+      const resUserExists = await fetch("api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      const { user } = await resUserExists.json();
+
+      if (user) {
+        setError("User already exists");
+        return;
+      }
+
+      const res = await fetch("api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+      if (res.ok) {
+        const form = e.target;
+        form.reset();
+        router.push("/");
+      } else {
+        console.log("user registration failed.");
+      }
+    } catch (error) {
+      console.log("Error during registration: ", error);
+    }
+  };
+
   return (
     <div class="flex w-screen flex-wrap text-slate-800">
       <div class="relative hidden h-screen select-none flex-col justify-center bg-blue-800  text-center md:flex md:w-1/1">
@@ -58,12 +113,16 @@ const Signup = () => {
               Or use email instead
             </div>
           </div>
-          <form class="flex flex-col items-stretch pt-3 md:pt-8">
+          <form
+            class="flex flex-col items-stretch pt-3 md:pt-8"
+            onSubmit={handleSumbit}
+          >
             <div class="flex flex-col pt-4">
               <div class="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
                 <input
                   type="text"
                   id="login-name"
+                  onChange={(e) => setUsername(e.target.value)}
                   class="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                   placeholder="Name"
                 />
@@ -74,6 +133,7 @@ const Signup = () => {
                 <input
                   type="email"
                   id="login-email"
+                  onChange={(e) => setEmail(e.target.value)}
                   class="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                   placeholder="Email"
                 />
@@ -84,6 +144,7 @@ const Signup = () => {
                 <input
                   type="password"
                   id="login-password"
+                  onChange={(e) => setPassword(e.target.value)}
                   class="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
                   placeholder="Password (minimum 8 characters)"
                 />
@@ -103,10 +164,7 @@ const Signup = () => {
                 </a>
               </label>
             </div>
-            <button
-              type="submit"
-              class="mt-6 rounded-lg bg-blue-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"
-            >
+            <button class="mt-6 rounded-lg bg-blue-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32">
               Sign in
             </button>
           </form>
