@@ -19,8 +19,14 @@ const navigation = [
 ];
 
 export default function Nav() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <main>
@@ -39,7 +45,9 @@ export default function Nav() {
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                 alt=""
               /> */}
-                  <h1 className="text-white font-bold text-2xl">techX</h1>
+                  <h1 className="text-white font-bold text-2xl animate-pulse">
+                    techX
+                  </h1>
                 </div>
               </Link>
             </div>
@@ -69,9 +77,75 @@ export default function Nav() {
                 <a>
                   <IoCartOutline className="h-6 w-6 mr-2" aria-hidden="true" />
                 </a>
-                <Link href="/profile">
-                  <div className="text-sm font-semibold leading-6 border rounded-xl p-3 dark:text-white text-black mr-3 dark:hover:bg-gray-900"></div>
-                </Link>
+                <div className="relative inline-block text-left">
+                  <button
+                    onClick={toggleDropdown}
+                    className="flex text-sm  rounded-full md:me-0  "
+                  >
+                    <span className="sr-only">Open user menu</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-7 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                      />
+                    </svg>
+                  </button>
+
+                  {isOpen && (
+                    <div className="z-10 absolute right-0 mt-2  divide-y  rounded-lg shadow w-44 bg-[#1d1d1d] dark:divide-[#1d1d1d]">
+                      <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                        <div>Bonnie Green</div>
+                        <div className="font-medium truncate">
+                          name@gmail.com
+                        </div>
+                      </div>
+                      <ul
+                        className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                        aria-labelledby="dropdownUserAvatarButton"
+                      >
+                        <li>
+                          <Link href="/profile">
+                            <div className="block px-4 py-2  hover:bg-gray-600 ">
+                              Profile
+                            </div>
+                          </Link>
+                        </li>
+                        {/* <li>
+                          <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Settings
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Earnings
+                          </a>
+                        </li> */}
+                      </ul>
+                      <div className="py-2">
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-600"
+                        >
+                          Sign out
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <div className="hidden lg:flex lg:flex-1 lg:justify-end">

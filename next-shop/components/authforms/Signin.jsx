@@ -32,9 +32,9 @@ const Signin = () => {
 
       <div class="flex w-full lg:w-1/2 flex-col">
         <div class="flex justify-center pt-6 text-justify ">
-          <a href="#" class="text-2xl  font-bold text-white   animate-pulse">
+          {/* <a href="#" class="text-2xl  font-bold text-white   animate-pulse">
             {shopName}
-          </a>
+          </a> */}
         </div>
         <div class="my-2 mx-auto flex flex-col justify-center px-6 pt-8  md:justify-start  lg:w-3/4">
           <p class="text-center sm:text-left text-3xl text-white font-bold">
@@ -58,9 +58,9 @@ const Signin = () => {
             Get started with Google
           </button>
           <div class="relative mt-8 flex h-px place-items-center bg-gray-200">
-            <div class="absolute left-1/2 h-6 -translate-x-1/2 bg-black px-4 text-center text-sm text-gray-500">
+            {/* <div class="absolute left-1/2 h-6 -translate-x-1/2 bg-black px-4 text-center text-sm text-gray-500">
               Or use email instead
-            </div>
+            </div> */}
           </div>
           <form
             class="flex flex-col items-stretch pt-3 md:pt-8"
