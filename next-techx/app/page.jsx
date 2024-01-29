@@ -5,9 +5,9 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 
 import MainPage from "@/components/MainPage";
 
-import ProductCards from "@/components/ProductsCards";
+import ProductCards from "@/components/product/ProductCards";
 import Nav from "@/components/Nav";
-import ProductCatalog from "@/components/ProductCatalog";
+import ProductCatalog from "@/components/product/ProductCatalog";
 import Test from "@/components/Test";
 
 export default async function Home() {
@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <>
       <Nav />
-      <Test />
+
       <MainPage />
 
       <div className=" ml-16 flex  flex-wrap justify-start items-center">
