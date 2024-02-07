@@ -77,11 +77,7 @@
         </ul>
       </div>
       <!--PRODUCTS CONTENT-->
-      <div
-        id="id-products-content"
-        class="products-content"
-        style="display: none"
-      >
+      <div id="id-products-content" class="products-content" style="display: none">
         <!--Creation product item-->
         <div id="id-create-product" class="products-card">
           <ion-icon name="color-wand-outline"></ion-icon>
@@ -112,43 +108,58 @@
         </div>
       </div>
       <!--Product creation content.-->
-      <div id="id-create-product-content" style="display: none">
-        <h1>HAALKS:LAKS:LAK:SLKA:SK:A</h1>
+      <div id="id-create-product-content" class="create-product-content" style="display: none">
+        <!--Menu products.-->
+        <div class="product-creation-navigation-card">
+          <a id="id-create-product-content-phone" class="product-creation-navigation-card-tab">
+            <ion-icon name="phone-portrait-outline"></ion-icon>
+          </a>
+          <a href="#" class="product-creation-navigation-card-tab">
+            <ion-icon name="laptop-outline"></ion-icon>
+          </a>
+          <a href="#" class="product-creation-navigation-card-tab">
+            <ion-icon name="tv-outline"></ion-icon>
+          </a>
+        </div>
+        <!--Content phone data.-->
+        <div id="id-content-phone-data">
+          <div class="card-content-product-data">
+            <div class="line-card-content-product-data">
+              <button class="button-step-in-product-operations-menu">
+                <div class="arrow-back-circle-outline"><ion-icon name="arrow-back-circle-outline"></ion-icon></div>
+                <div class="arrow-back-circle-outline-text">Back menu</div>
+              </button>
+              <p class="title-card-content-product-data">Add Phone</p>
+            </div>
+            <div class="line-card-content-product-data">
+              <input id="id-input-phone-data-Company" class="input-data" name="text" type="text" placeholder="Company">
+              <input id="id-input-phone-data-Series" class="input-data" name="text" type="text" placeholder="Series">
+              <input id="id-input-phone-data-Screen_diagonal" class="input-data" name="text" type="text" placeholder="Screen diagonal">
+            </div>
+            <div class="line-card-content-product-data">
+              <button id="id-button-add-phone" class="button-add-product">Add Phone</button>
+            </div>
+          </div>
+        </div>
       </div>
       <!--ORDERS CONTENT-->
       <div id="id-orders-content" class="orders-content" style="display: none">
         <h1>Orders</h1>
       </div>
       <!--ACTIVITY CONTENT-->
-      <div
-        id="id-activity-content"
-        class="activity-content"
-        style="display: none"
-      >
+      <div id="id-activity-content" class="activity-content" style="display: none">
         <h1>Activity</h1>
       </div>
       <!--REVIEWS CONTENT-->
-      <div
-        id="id-reviews-content"
-        class="reviews-content"
-        style="display: none"
-      >
+      <div id="id-reviews-content" class="reviews-content" style="display: none">
         <h1>Reviews</h1>
       </div>
       <!--ACCOUNTING CONTENT-->
-      <div
-        id="id-accounting-content"
-        class="accounting-content"
-        style="display: none"
-      >
+      <div id="id-accounting-content" class="accounting-content" style="display: none">
         <h1>Accounting</h1>
       </div>
       <!--SETTINGS CONTENT-->
-      <div
-        id="id-settings-content"
-        class="settings-content"
-        style="display: none"
-      >
+      <div id="id-settings-content" class="settings-content" style="display: none">
         <div class="settings-content">
           <h1>Settings</h1>
           <div>
@@ -178,13 +189,7 @@
       </div>
     </div>
   </body>
-  <script
-    type="module"
-    src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-  ></script>
-  <script
-    nomodule
-    src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-  ></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script type="module" src="../js/AdminMenu.js"></script>
 </html>
