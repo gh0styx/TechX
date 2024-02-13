@@ -748,7 +748,6 @@ body {
   flex-wrap: wrap;
 }
 
-<<<<<<< HEAD
 .crt-product-content {
   display: flex;
   justify-content: center;
@@ -791,7 +790,7 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-=======
+
 #theme-toggle {
   opacity: 0;
   position: absolute;
@@ -829,4 +828,3 @@ label[for="theme-toggle"]::after {
   transform: translateX(24px);
   background-color: var(--text-color);
 }
->>>>>>> 1382a918d8104aaf674ac734b9d1f7d3d65425e9
