@@ -48,11 +48,5 @@ function BreakErrorMessage()
     error_message.style.display = "none";
 }
 
-function backToMainMenu()
-{
-    window.history.back();
-}
-
 document.getElementById("id-button-confirm").onclick = Validator;
 document.getElementById("id-close-error-message").onclick = BreakErrorMessage;
-document.getElementById("id-button-back").onclick = backToMainMenu;
