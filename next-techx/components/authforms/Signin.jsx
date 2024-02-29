@@ -94,7 +94,7 @@ const Signin = () => {
 
             if (create_session_data) {
               // <---- Сессия создана.
-              router.push("/");
+              window.location.href = "/";
               console.log("Sessia is complite");
             } //    <<<----- Ошибка при создании сесси.
             else {
