@@ -66,8 +66,7 @@ export default function Nav() {
     }
   }, [menuOpen]);
 
-  const handleSignOut = async (e) => 
-  {
+  const handleSignOut = async (e) => {
     e.preventDefault();
 
     try {
@@ -164,7 +163,7 @@ export default function Nav() {
                       </CommandGroup>
                     </CommandList>
                   </CommandDialog>
-                  <Link href="" onClick={OpenCart}>
+                  <Link href="#" onClick={OpenCart}>
                     <Cart />
                   </Link>
                 </div>
@@ -249,7 +248,7 @@ export default function Nav() {
                       </CommandGroup>
                     </CommandList>
                   </CommandDialog>
-                  <Link href="" className="w-6 h-6 ml-2" onClick={OpenCart}>
+                  <Link href="#" className="w-6 h-6 ml-2" onClick={OpenCart}>
                     <Cart />
                   </Link>
                 </div>
