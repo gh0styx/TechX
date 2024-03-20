@@ -1,16 +1,18 @@
 import mongoose, { connect } from "mongoose";
 import express from "express";
-import { _techx_data_connection_string } from './connect.js';
-import { IPhoneModel } from "./Models/IPhone.js";
-import { UserModel } from "./Models/User.js";
-import { SessionModel } from "./Models/Session.js"
+import { _techx_data_connection_string } from './ServerData/connect_db.js';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import config from './config.js';
+import config from './Configs/config_token.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import SEND_CODE_VERIFICATION from './Configs/config_gmail.js'
+import { IPhoneModel } from "./Models/IPhone.js";
+import { UserModel } from "./Models/User.js";
+import { SessionModel } from "./Models/Session.js"
+
 
 
 //
@@ -33,6 +35,7 @@ import { dirname, join } from 'path';
 //
 
 dotenv.config();
+
 const app = express();
 const _token_secret_key = config.token_secret_key;
 const __filename = fileURLToPath(import.meta.url);
@@ -75,6 +78,25 @@ app.post("/CheckUserExists", async (req, res) =>
     else 
       res.status(200).json({ existing_user: false });
   } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+        // We send the user a confirmation code by email.
+app.post("/SendConfirmationCodeEmail", async (req, res) => 
+{
+  try 
+  {
+    const { email } = req.body;
+    const confirmation_сode = Math.floor(1000 + Math.random() * 9000).toString();
+
+    SEND_CODE_VERIFICATION(email, confirmation_сode);
+
+    res.status(200).json({ conf: confirmation_сode });
+  } 
+  catch (error) 
+  {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -244,7 +266,7 @@ app.post("/RemoveFromSession", async (req, res) =>
 app.get('/GetImage/:ImageName', (req, res) => 
 {
   const image_name = decodeURIComponent(req.params.ImageName);
-  const image_path = join(__dirname, 'Images', image_name);
+  const image_path = join(__dirname, 'ProductImages', image_name);
 
   if (fs.existsSync(image_path)) 
   {

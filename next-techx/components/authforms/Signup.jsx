@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,7 +11,7 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { PullOutOfSession } from "../../lib/session";
 import { set } from "mongoose";
-import SquaresAnimation from "../SquaresAnimation";
+// import SquaresAnimation from "../SquaresAnimation";
 
 const Signup = () => {
   const [name, setUsername] = useState("");
@@ -19,7 +19,10 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-
+  const [conf_u, SetConfU] = useState();
+  const [is_modal_confirm_mail_open, SetisModalConfirmMailOpen] =
+    useState(false);
+  const input_confirm_refs = [useRef(), useRef(), useRef(), useRef()];
   const router = useRouter();
 
   const handleSumbit = async (e) => {
@@ -47,28 +50,80 @@ const Signup = () => {
         console.log("User exists"); //  <<---- Пользователь уже существует.
         return;
       } else {
-        const res = await fetch(
-          "http://localhost:3001/NewUser", //  <<---- Добавим пользователя.
+        SetisModalConfirmMailOpen(true);
+
+        const SendConf = await fetch(
+          "http://localhost:3001/SendConfirmationCodeEmail", //  <<---- Отправляем код подтверждения.
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name,
-              email,
-              password: await bcrypt.hash(password, 10),
-            }),
+            body: JSON.stringify({ email }),
           }
         );
 
-        if (res.ok) {
-          const form = e.target;
+        const { conf } = await SendConf.json();
 
-          form.reset();
-          router.push("/signin");
-        } else console.log("user registration failed.");
+        SetConfU(conf);
       }
     } catch (error) {
       console.log("Error during registration: ", error);
+    }
+  };
+
+  const handleInputChange = (index, e) => {
+    const input = e.target;
+
+    if (input.value.length === 1) {
+      if (index < input_confirm_refs.length - 1)
+        input_confirm_refs[index + 1].current.focus();
+    }
+  };
+
+  const handleClearClick = () => {
+    input_confirm_refs.forEach((ref) => {
+      ref.current.value = "";
+    });
+    input_confirm_refs[0].current.focus();
+  };
+
+  const handleVerifyClick = async () => {
+    const code = input_confirm_refs.map((ref) => ref.current.value).join("");
+
+    if (conf_u === code) {
+      const res = await fetch(
+        "http://localhost:3001/NewUser", //  <<---- Добавим пользователя.
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            password: await bcrypt.hash(password, 10),
+          }),
+        }
+      );
+
+      if (res.ok) window.location.href = "/signin";
+      else
+        <div className="absolute right-0 top-32 mr-4 mt-4 w-[250px]">
+          {showAlert && error && (
+            <Alert>
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>User registation failed</AlertDescription>
+            </Alert>
+          )}
+        </div>;
+    } else {
+      <div className="absolute right-0 top-32 mr-4 mt-4 w-[250px]">
+        {showAlert && error && (
+          <Alert>
+            <ExclamationTriangleIcon className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>Unknown token</AlertDescription>
+          </Alert>
+        )}
+      </div>;
     }
   };
 
@@ -118,11 +173,7 @@ const Signup = () => {
         </div>
       </div>
       <div className="flex w-full lg:w-1/2 flex-col">
-        <div className="flex justify-center pt-6 sm:justify-center sm:pl-12">
-          {/* <a href="#" class="text-2xl font-bold text-white animate-pulse">
-            {shopName}
-          </a> */}
-        </div>
+        <div className="flex justify-center pt-6 sm:justify-center sm:pl-12"></div>
         <div className="my-2 mx-auto mt-16 flex flex-col justify-center px-6 pt-8 sm:px-8 md:justify-start md:px-12 lg:w-3/4 text-black dark:text-white">
           <p className="text-center sm:text-left text-3xl  font-bold">
             Create your free account
@@ -223,7 +274,8 @@ const Signup = () => {
               variant="outline"
               className="text-black dark:text-white mt-6 "
             >
-              Sign Up
+              {" "}
+              Sign Up{" "}
             </Button>
             {/* <button className="mt-6 w-full sm:w-auto rounded-lg bg-blue-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2">
               Sign Up
@@ -231,6 +283,225 @@ const Signup = () => {
           </form>
         </div>
       </div>
+      {/* Модальное окно */}
+      {is_modal_confirm_mail_open && (
+        <>
+          <style>
+            {`
+            .modal-wrapper {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              backdrop-filter: blur(5px);
+              background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+            }
+
+           .form {
+            --black: #000000;
+            --ch-black: #141414;
+            --eer-black: #1b1b1b;
+            --night-rider: #2e2e2e;
+            --white: #ffffff;
+            --af-white: #f3f3f3;
+            --ch-white: #e1e1e1;
+            --tomato: #fa5656;
+            font-family: Helvetica, sans-serif;
+            padding: 25px;
+            display: flex;
+            max-width: 520px;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            color: var(--af-white);
+            background-color: var(--black);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, .1);
+          }
+          
+          /*----heading and description-----*/
+          
+          .info {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+          }
+          
+          .title {
+            font-size: 1.5rem;
+            font-weight: 900;
+          }
+          
+          .description {
+            margin-top: 10px;
+            font-size: 1rem;
+          }
+          
+          /*----input-fields------*/
+          
+          .form .input-fields {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+          }
+          
+          .form .input-fields input {
+            height: 2.5em;
+            width: 2.5em;
+            outline: none;
+            text-align: center;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 1.5rem;
+            color: var(--af-white);
+            border-radius: 5px;
+            border: 2.5px solid var(--eer-black);
+            background-color: var(--eer-black);
+          }
+          
+          .form .input-fields input:focus {
+            border: 1px solid var(--af-white);
+            box-shadow: inset 10px 10px 10px rgba(0, 0, 0, .15);
+            transform: scale(1.05);
+            transition: 0.5s;
+          }
+          
+          /*-----verify and clear buttons-----*/
+          
+          .action-btns {
+            display: flex;
+            margin-top: 20px;
+            gap: 0.5rem;
+          }
+          
+          .verify {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--night-rider);
+            text-shadow: none;
+            background: var(--af-white);
+            box-shadow: transparent;
+            border: 1px solid var(--af-white);
+            transition: 0.3s ease;
+            user-select: none;
+          }
+          
+          .verify:hover,.verify:focus {
+            color: var(--night-rider);
+            background: var(--white);
+          }
+          
+          .clear {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--ch-white);
+            text-shadow: none;
+            background: transparent;
+            border: 1px solid var(--ch-white);
+            transition: 0.3s ease;
+            user-select: none;
+          }
+          
+          .clear:hover,.clear:focus {
+            color: var(--tomato);
+            background-color: transparent;
+            border: 1px solid var(--tomato);
+          }
+          
+          /*-----close button------*/
+          
+          .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: var(--night-rider);
+            color: var(--ch-white);
+            height: 30px;
+            width: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: .5s ease;
+          }
+          
+          .close:hover {
+            background-color: var(--tomato);
+            color: var(--white);
+          }
+         `}
+          </style>
+          <div className="modal-wrapper">
+            <form className="form">
+              <span
+                className="close"
+                onClick={() => SetisModalConfirmMailOpen(false)}
+              >
+                X
+              </span>
+              <div className="info">
+                <span className="title">Email Сonfirmation</span>
+                <p className="description">
+                  We have sent you an email with a cheat code, please enter the
+                  verification code. If there is still no letter, check your
+                  mail for errors.
+                </p>
+              </div>
+              <div className="input-fields">
+                <input
+                  ref={input_confirm_refs[0]}
+                  maxLength="1"
+                  type="tel"
+                  placeholder=""
+                  onChange={(e) => handleInputChange(0, e)}
+                />
+                <input
+                  ref={input_confirm_refs[1]}
+                  maxLength="1"
+                  type="tel"
+                  placeholder=""
+                  onChange={(e) => handleInputChange(1, e)}
+                />
+                <input
+                  ref={input_confirm_refs[2]}
+                  maxLength="1"
+                  type="tel"
+                  placeholder=""
+                  onChange={(e) => handleInputChange(2, e)}
+                />
+                <input
+                  ref={input_confirm_refs[3]}
+                  maxLength="1"
+                  type="tel"
+                  placeholder=""
+                  onChange={(e) => handleInputChange(3, e)}
+                />
+              </div>
+              <div className="action-btns">
+                <a href="#" className="verify" onClick={handleVerifyClick}>
+                  Verify
+                </a>
+                <a className="clear" onClick={handleClearClick}>
+                  Clear
+                </a>
+              </div>
+            </form>
+          </div>
+        </>
+      )}
     </div>
   );
 };

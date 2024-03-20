@@ -165,7 +165,7 @@ export default function Nav() {
                       </CommandGroup>
                     </CommandList>
                   </CommandDialog>
-                  <Link href="" onClick={OpenCart}>
+                  <Link href="#" onClick={OpenCart}>
                     <Cart />
                   </Link>
                 </div>
@@ -250,7 +250,7 @@ export default function Nav() {
                       </CommandGroup>
                     </CommandList>
                   </CommandDialog>
-                  <Link href="" className="w-6 h-6 ml-2" onClick={OpenCart}>
+                  <Link href="#" className="w-6 h-6 ml-2" onClick={OpenCart}>
                     <Cart />
                   </Link>
                 </div>
@@ -283,7 +283,7 @@ export default function Nav() {
                         <a
                           href="/signup"
                           className="block px-4 py-2 text-sm  hover:bg-[#2b2b2b]"
-                          onClick={handleSignOut}
+                          // onClick={handleSignOut}
                         >
                           Sign up <span>&uarr;</span>
                         </a>
