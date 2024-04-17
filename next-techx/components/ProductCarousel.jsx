@@ -27,7 +27,7 @@ export function ProductCarousel() {
           "http://localhost:3001/GettingIphoneDataForCarusel",
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json" },
           }
         );
 
@@ -69,6 +69,11 @@ export function ProductCarousel() {
   return (
     <Carousel
       opts={{ align: "start" }}
+      plugins={[
+        Autoplay({
+          delay: 3000,
+        }),
+      ]}
       orientation="horizontal"
       className="mx-20 max-w-full justify-center"
     >
@@ -88,6 +93,7 @@ export function ProductCarousel() {
                   key={phoneIndex}
                   image={`http://localhost:3001/GetImage/${phone.images}`}
                   title={phone.model}
+                  color={phone.color}
                   price={phone.price}
                 />
               ))}
