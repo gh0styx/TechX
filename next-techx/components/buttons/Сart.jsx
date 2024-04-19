@@ -10,9 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
 import { AiOutlineShoppingCart } from "react-icons/ai";
-
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
@@ -48,7 +46,7 @@ const Cart = () => {
   };
 
   const GoCheckout = () => {
-    window.location.href = "/сheckout";
+    window.location.href = "/checkout";
   };
 
   const ClearAllFromCart = (e) => {
@@ -64,8 +62,7 @@ const Cart = () => {
     <Sheet>
       <SheetTrigger asChild>
         {/* <Button variant="outline">Open</Button> */}
-
-        <ShoppingCart className="h-6 w-5" aria-hidden="true" />
+        <ShoppingCart className="h-6 w-5 mb-2" aria-hidden="true" />
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -83,7 +80,11 @@ const Cart = () => {
                   className="grid grid-cols-4 items-center gap-4 mt-3"
                 >
                   <div>
-                    <img src={`/${item.img}`} alt="img" className="w-10" />
+                    <img
+                      src={`http://localhost:3001/GetImage/${item.img}`}
+                      alt="img"
+                      className="w-10"
+                    />
                   </div>
                   <div>{item.model}</div>
                   <div>{item.price}$</div>
@@ -112,12 +113,12 @@ const Cart = () => {
             <SheetFooter>
               <SheetClose asChild>
                 <Button type="button" onClick={GoCheckout}>
-                  <CheckIcon color="green" />
+                  Checkout
                 </Button>
               </SheetClose>
               <SheetClose>
                 <Button type="button" onClick={ClearAllFromCart}>
-                  <Cross2Icon color="red" />
+                  Сlear all
                 </Button>
               </SheetClose>
             </SheetFooter>
