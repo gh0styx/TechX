@@ -1,6 +1,7 @@
 /* = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
   * AUTHORIZATION WINDOW LOGIC.💊
 */
+const password_icon = document.getElementById('toggle-password-visibility'); 
 
 function Confuse(str)  // <-- This function takes a string and returns the SHA-256 
 {                     // hash of that string for the password verification function.
@@ -29,6 +30,17 @@ function Validator()  // <-- Password check function.
     });
 }
 
+const Change = () => 
+{
+  const passwordInput = document.getElementById('id-admin-password');
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  
+  passwordInput.setAttribute('type', type);
+
+  password_icon.name = password_icon.name === 'eye' ? 'eye-off' : 'eye';
+}
+
+password_icon.addEventListener('click' , Change)
 
 function ShowErrorMessage(mess)  // <-- Displaying the error window.
 {
