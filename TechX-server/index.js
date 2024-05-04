@@ -661,6 +661,10 @@ app.post("/SendProductReview", async (req, res) =>
     const { product_id, review_owner_id, user_name, user_review, grade } = req.body;
     let found_user_id = null;
     let found_user_name = null;
+    const current_date = new Date();
+    const day = ('0' + current_date.getDate()).slice(-2);
+    const month = ('0' + (current_date.getMonth() + 1)).slice(-2);    
+    const year = current_date.getFullYear();
     
     if(user_name == null)
     {
@@ -670,7 +674,16 @@ app.post("/SendProductReview", async (req, res) =>
       found_user_name = user_id.name
     }
 
-    const new_review = new ProductReviewModel({ product_id, review_owner_id: found_user_id || review_owner_id, review_owner_name: user_name || found_user_name, review: user_review, grade });
+    const new_review = new ProductReviewModel(
+    { 
+      product_id, 
+      review_owner_id: found_user_id || review_owner_id, 
+      review_owner_name: user_name || found_user_name, 
+      review: user_review, 
+      grade, 
+      date: `${day}.${month}.${year}`,
+      viewed_admin: false,  
+    });
 
     await new_review.save();
 
@@ -961,7 +974,9 @@ app.post("/GetProductReview", async (req, res) =>
           review: review_data[i].review,
           grade: review_data[i].grade,
           product_arr: reviews_product[i],
-          owner_name: review_owner[i]
+          owner_name: review_owner[i],
+          date: review_data[i].date,
+          viewed_admin: review_data[i].viewed_admin
         };
 
         formatted_data.push(combined);
@@ -976,6 +991,49 @@ app.post("/GetProductReview", async (req, res) =>
   {
     console.error(error);
     res.status(500).json({});
+  }
+});
+
+        // Removing a review by ID that is objectionable to the admin.
+app.post("/RemovingReviewById", async (req, res) => 
+{
+  try 
+  {
+    const review_id = req.body.id;
+
+    const id_r = await ProductReviewModel.findByIdAndDelete(review_id);
+
+    res.status(200).json({ success: true });
+  } 
+  catch (error) 
+  {
+    console.error(error);
+    res.status(500).json({ success: false });
+  }
+});
+
+        // Indicate in the database that the admin has checked this review.
+app.post("/AdminChecked", async (req, res) => 
+{
+  try 
+  {
+    const review_id = req.body.id;
+
+    const id_r = await ProductReviewModel.findById(review_id);
+
+    if(id_r != null) 
+    {
+      id_r.viewed_admin = true;
+      
+      await id_r.save();
+      
+      res.status(200).json({ success: true });
+    }
+  } 
+  catch (error) 
+  {
+    console.error(error);
+    res.status(500).json({ success: false });
   }
 });
 //#endregion
