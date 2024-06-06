@@ -7,7 +7,8 @@ import Link from "next/link";
 
 import ProductCards from "@/components/product/ProductCards";
 
-export default async function Home() {
+export default async function Home() 
+{
   return (
     <>
       <Nav />
@@ -105,25 +106,13 @@ export default async function Home() {
               title="PlayStation"
             />
           </Link>
-          <Link href="/product">
-            <ProductCatalog
-              image="https://img.jabko.ua/image/cache/-main-new/image13full.png.webp"
-              title="Samsung Galaxy"
-            />
-          </Link>
-          <Link href="/product">
-            <ProductCatalog
-              image="https://img.jabko.ua/image/cache/-main-new/image14full.png.webp"
-              title="Google Pixel"
-            />
-          </Link>
         </div>
       </div>
 
       <div className="mt-20">
         <ProductCarousel />
       </div>
-      <div className="mt-12 flex flex-row justify-center flex-wrap">
+      {/* <div className="mt-12 flex flex-row justify-center flex-wrap">
         <ProductCards
           image="https://jabko.ua/image/cache/catalog/products/2022/09/072253/photo_2022-09-07_22-53-30%20(1)-300x300.jpg"
           title="IPHONE 14 PRO MAX"
@@ -154,7 +143,7 @@ export default async function Home() {
           title="APPLE WATCH 8"
           price="450"
         />
-      </div>
+      </div> */}
     </>
   );
 }

@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/AdminMenu/AdminMenu.css" />
     <link rel="stylesheet" href="../styles/AdminMenu/MenuContentsStyles/ProductContentStyle.css"/>
+    <link rel="stylesheet" href="../styles/AdminMenu/MenuContentsStyles/OrdercontentSyle.css"/>
     <link rel="stylesheet" href="../styles/AdminMenu/MenuContentsStyles/MenuReviewsContentStyle.css"/>
     <link rel="stylesheet" href="../styles/AdminMenu/MenuContentsStyles/MenuExitContentStyle.css">
   </head>
   <body>
     <div id="id-main-container" class="container">
-      <!-- #region [Vertical menu sector.] -->
+      <!--#region [Vertical menu sector.]-->
       <div class="navigation">
         <div class="menu-toggle"></div>
         <ul class="list">
@@ -80,7 +81,7 @@
         </ul>
       </div>
       <!-- #endregion -->
-      <!-- #region [Message for user sector.] -->
+      <!--#region [Message for user sector.]-->
       <!-- Success message sector. -->
       <div id="id-notification" class="success">
         <div class="success__icon">
@@ -110,14 +111,7 @@
         </div>
       </div>
       <!-- #endregion -->
-      
-  
-
-
-
-
-      
-      <!-- #region [PRODUCTS CONTENT]-->
+      <!--#region [PRODUCTS CONTENT]-->
       <div id="id-products-content" class="products-content" style="display: none">
         <!--Creation product item-->
         <div id="id-create-product" class="products-card">
@@ -193,8 +187,8 @@
             </svg>
           </label>
         </section>
-        <!-- #region [Content iphone data.] -->
-        <div id="id-API-product-window" style="display: flex;">
+        <!-- #region [Modal window API.] -->
+        <div id="id-API-product-window" style="display: none;">
           <div class="exit-content">
             <div class="confirmation-card">
               <ion-icon name="earth-outline" class="exit-icon"></ion-icon>
@@ -746,6 +740,19 @@
       <!-- #endregion -->
       <!-- #region [Product menege content]-->
       <div id="id-manage-product-content" style="display: none">
+        <div id="id-manage-delete-product" style="display: none">
+          <div class="exit-content">
+            <div class="confirmation-card">
+              <ion-icon name="trash-outline" class="exit-icon"></ion-icon>
+              <h2>Delete this product??</h2>
+              <p>Do you definitely want to delete the product permanently??</p>
+              <div class="button-container">
+                <button id="id-menege-cancel" class="exit-button">Cancel</button>
+                <button id="id-menege-delete" class="cancel-button">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="table-container">
           <div class="table-controls">
             <button class="button-step-in-product-operations-menu" id="id-back-to-product-menu8">
@@ -765,6 +772,7 @@
             <thead>
               <tr>
                 <th>Image</th>
+                <th>Category</th>
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Price</th>
@@ -773,7 +781,6 @@
               </tr>
             </thead>
             <tbody>
-              
             </tbody>
           </table>
           <div id="no-items-message" style="display: none;">
@@ -798,16 +805,65 @@
       </div>      
       <!-- #endregion -->
       <!-- #endregion -->
-
-
-
-
-
-
-
       <!--#region [ORDERS CONTENT.]-->
       <div id="id-orders-content" class="orders-content" style="display: none">
-        <h1>Orders</h1>
+        <div class="table-container">
+          <!-- #region [Search Bar.] -->
+          <div class="table-controls">
+            <input type="text" id="search-order" placeholder="Search...">
+            <select id="sort-order">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+            <select id="filter-status-order">
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="shipped">Shipped</option>
+              <option value="received">Received</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <!-- #endregion -->
+          <!-- Not found message -->
+          <div id="no-items-order-message" style="display: none;">
+            <div class="header-nosearch-reviews" style="width: 100%;"> 
+              <div class="div_image_vs">
+                <div class="image-nosearch-reviews">
+                  <ion-icon name="thumbs-down-outline"></ion-icon>
+                </div> 
+              </div> 
+              <div class="content-missing-reviews">
+                <span class="title-nosearch-reviews">We didn't find anything</span> 
+                <p class="message-nosearch-reviews">We did not find a product in any suitable category</p> 
+              </div> 
+            </div> 
+          </div>
+          <!-- #region [Order table.] -->
+          <div id="id-order-table" class="table-wrapper">
+            <table class="order-table">
+              <thead class="order-head">
+                <tr class="order-tr">
+                  <th class="order-th">Order ID</th>
+                  <th class="order-th">Products</th>
+                  <th class="order-th">Name</th>
+                  <th class="order-th">Phone</th>
+                  <th class="order-th">Email</th>
+                  <th class="order-th">City</th>
+                  <th class="order-th">Address</th>
+                  <th class="order-th">Payment</th>
+                  <th class="order-th">Sum</th>
+                  <th class="order-th">Date</th>
+                  <th class="order-th">Status</th>
+                </tr>
+              </thead>
+              <tbody id="order-body" class="order-body">
+                <!-- Rows will be inserted here dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <!-- #endregion -->
+        </div>
       </div>
       <!-- #endregion -->
       <!--#region [ACTIVITY CONTENT.]-->
@@ -923,6 +979,7 @@
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script type="module" src="../js/AdminMenu/AdminMenu.js"></script>
   <script type="module" src="../js/AdminMenu/MenuContentsLogics/ProductContentLogic.js"></script>
+  <script type="module" src="../js/AdminMenu/MenuContentsLogics/OrderContentLogic.js"></script>
   <script type="module" src="../js/AdminMenu/MenuContentsLogics/ReviewsContentLogic.js"></script>
   <script type="module" src="../js/AdminMenu/MenuContentsLogics/ExitContentLogic.js"></script>
 </html>

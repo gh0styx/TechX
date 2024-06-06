@@ -6,7 +6,7 @@ let number_reviews = 0;
 
 function LoadAllReviews() 
 {
-    fetch('https://squid-app-d6fho.ondigitalocean.app:443/GetProductReview', 
+    fetch('https://techx-server.tech:443/GetProductReview', 
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
@@ -24,6 +24,16 @@ function LoadAllReviews()
 
             CollectReviewCard(review_data)
             HiddenNoReviews();
+
+            let context_review = 0;
+
+            review_data.forEach(new_review => 
+            {
+                if(!new_review.viewed_admin)
+                    context_review++;
+            });
+
+            window.electron.send('UpdateReviewCountForContextMenu', context_review);
         }
         else if(review_data.length == 0)
             ShowNoReviews();
@@ -49,7 +59,7 @@ function CollectReviewCard(review_data)
                     <p id="id-review-text" class="some">${review.review}</p>
                 </div>
                 <div class="thumb-review">
-                    <img id="id-img-review" src="https://squid-app-d6fho.ondigitalocean.app:443/GetImage/${review.product_arr.images[0]}" height="250px" width="250px" alt="img-review">
+                    <img id="id-img-review" src="https://techx-server.tech:443/GetImage/${review.product_arr.images[0]}" height="250px" width="250px" alt="img-review">
                 </div>
                 <div class="detial-review">
                     <div class="title-review">
@@ -107,7 +117,7 @@ function AdminСhecked(id)
 {
     try 
     {
-        fetch('https://squid-app-d6fho.ondigitalocean.app:443/AdminChecked', 
+        fetch('https://techx-server.tech:443/AdminChecked', 
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -116,6 +126,8 @@ function AdminСhecked(id)
         {
             if (!response.ok)
                 throw new Error('Network response was not ok');
+            else
+                previous_number_reviews--;
         });
     } 
     catch (error) { console.error(error); }
@@ -236,7 +248,7 @@ function DeleteReview()
 {
     CancelDeleteReview();
 
-    fetch('https://squid-app-d6fho.ondigitalocean.app:443/RemovingReviewById', 
+    fetch('https://techx-server.tech:443/RemovingReviewById', 
     {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

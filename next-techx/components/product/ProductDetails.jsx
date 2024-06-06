@@ -36,14 +36,13 @@ const ProductDetails = () => {
 
     if (showAlert) {
       timer = setTimeout(() => {
-        setShowAlert(false); // Скрывает Alert через 2 секунды
-      }, 4000); // 2000 мс = 2 секунды
+        setShowAlert(false);
+      }, 4000);
     }
 
-    return () => clearTimeout(timer); // Очистка таймера
+    return () => clearTimeout(timer);
   }, [showAlert]);
 
-  // Функция для переключения состояния лайка
   const toggleLike = async () => {
     setLiked(!liked);
 
@@ -55,7 +54,7 @@ const ProductDetails = () => {
 
     if (!liked) {
       const formatted_data = await fetch(
-        `https://squid-app-d6fho.ondigitalocean.app:443/AddFavoriteProduct/${id_product}`,
+        `https://techx-server.tech:443/AddFavoriteProduct/${id_product}`,
         {
           method: "POST",
           headers: {
@@ -66,7 +65,7 @@ const ProductDetails = () => {
       );
     } else {
       const formatted_data = await fetch(
-        `https://squid-app-d6fho.ondigitalocean.app:443/DeleteFavoriteProduct/${id_product}`,
+        `https://techx-server.tech:443/DeleteFavoriteProduct/${id_product}`,
         {
           method: "POST",
           headers: {
@@ -102,7 +101,6 @@ const ProductDetails = () => {
     };
   }, []);
 
-  // Пример анимации элемента с использованием Framer Motion
   const variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -112,7 +110,7 @@ const ProductDetails = () => {
     const ToGetData = async (id) => {
       try {
         const formatted_data = await fetch(
-          `https://squid-app-d6fho.ondigitalocean.app:443/ExtractData/${id}`,
+          `https://techx-server.tech:443/ExtractData/${id}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -122,8 +120,10 @@ const ProductDetails = () => {
         if (formatted_data.ok) {
           const data = await formatted_data.json();
 
+          
           SetProductData(data);
           setSelectedImage(data.images[0]);
+          console.log(data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -137,7 +137,7 @@ const ProductDetails = () => {
         );
 
         const rew = await fetch(
-          `https://squid-app-d6fho.ondigitalocean.app:443/GetProductReview/${id_product}`,
+          `https://techx-server.tech:443/GetProductReview/${id_product}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -217,7 +217,7 @@ const ProductDetails = () => {
       const product_id = new URLSearchParams(window.location.search).get("id");
 
       const ServerReview = await fetch(
-        "https://squid-app-d6fho.ondigitalocean.app:443/SendProductReview",
+        "https://techx-server.tech:443/SendProductReview",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -254,7 +254,7 @@ const ProductDetails = () => {
       const product_id = new URLSearchParams(window.location.search).get("id");
 
       const ServerReview = await fetch(
-        "https://squid-app-d6fho.ondigitalocean.app:443/SendProductReview",
+        "https://techx-server.tech:443/SendProductReview",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -341,7 +341,7 @@ const ProductDetails = () => {
                   <img
                     className="object-cover w-full max-sm:w-auto lg:h-1/2"
                     src={
-                      `https://squid-app-d6fho.ondigitalocean.app:443/GetImage/${selectedImage}` ||
+                      `https://techx-server.tech:443/GetImage/${selectedImage}` ||
                       "Loading..."
                     }
                     alt=""
@@ -370,7 +370,7 @@ const ProductDetails = () => {
                       >
                         <img
                           className="object-cover w-full lg:h-32"
-                          src={`https://squid-app-d6fho.ondigitalocean.app:443/GetImage/${image}`}
+                          src={`https://techx-server.tech:443/GetImage/${image}`}
                           alt={`Product Image ${index + 1}`}
                         />
                       </a>
@@ -640,52 +640,104 @@ const ProductDetails = () => {
           transition={{ duration: 0.5 }}
         />
 
-        <div className=" rounded-lg  p-4 mx-20 dark:bg-[#1d1d1d]  shadow-lg">
+        <div className="rounded-lg p-4 mx-20 dark:bg-[#1d1d1d] shadow-lg">
           <div className="mt-4">
-            <h4 className="dark:text-white text-lg font-bold mb-2">
-              Основные характеристики
-            </h4>
-
+            <h4 className="dark:text-white text-lg font-bold mb-2">Main characteristics</h4>
             <div className="grid grid-cols-2 gap-4">
-              {[
-                { title: "Бренд", value: "Apple" },
-                { title: "Модель", value: "iPhone 15 Pro Max" },
-                { title: "Формат SIM-карты", value: "Nano-Sim + eSim" },
-                {
-                  title: "Гарантия",
-                  value: "1 год от производителя + 31 день от Ябко",
-                },
-                { title: "Защита от влаги", value: "IP68" },
-                { title: "Цвет устройства", value: "Natural Titanium" },
-                { title: "Объем памяти", value: "256GB" },
-                { title: "Память", value: "256GB" },
-                { title: "Оперативная память", value: "8GB" },
-                { title: "Диагональ экрана", value: '6.7"' },
-                { title: "Разрешение экрана", value: "2796×1290 пикселей" },
-                { title: "Процессор", value: "Apple A17 Pro" },
-                {
-                  title: "Время автономной работы",
-                  value: "до 29 часов видео",
-                },
-                { title: "Основная камера", value: "48 МП" },
-                { title: "Фронтальная камера", value: "12 Мп" },
-                {
-                  title: "Сенсоры",
-                  value:
-                    "Face ID, LiDAR, барометр, гироскоп, акселерометр, датчик приближения, датчик освещенности",
-                },
-                {
-                  title: "Сети",
-                  value: "Wi-Fi, 5G, GPS, ГЛОНАСС, Galileo, QZSS, BeiDou",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="flex items-center  shadow-lg dark:bg-black rounded-md p-2"
-                >
-                  <h6 className="text-black dark:text-white font-medium mr-2">
-                    {item.title}:
-                  </h6>
+              {(product_data?.category === "iPhone" ? (
+                [
+                  { title: "Brand", value: product_data?.brand || "Loading..." },
+                  { title: "Model", value: product_data?.model || "Loading..." },
+                  { title: "Color", value: product_data?.color || "Loading..." },
+                  { title: "Memory", value: product_data?.memory || "Loading..." },
+                  { title: "Processor", value: product_data?.processor || "Loading..." },
+                  { title: "OS", value: product_data?.os || "Loading..." },
+                  { title: "Display size", value: product_data?.displaySize || "Loading..." },
+                  { title: "Main camera", value: product_data?.camera || "Loading..." },
+                  { title: "Battery", value: product_data?.battery || "Loading..." },
+                  { title: "Description", value: product_data?.description || "Loading..." },
+                  { title: "Guarantee", value: "1 year from the manufacturer + 31 days from TechX" },
+                ]
+              ) : product_data?.category === "Macbook" ? (
+                [
+                  { title: "Brand", value: product_data?.brand || "Loading..." },
+                  { title: "Model", value: product_data?.model || "Loading..." },
+                  { title: "Color", value: product_data?.color || "Loading..." },
+                  { title: "Processor", value: product_data?.processor || "Loading..." },
+                  { title: "CPU", value: product_data?.CPU || "Loading..." },
+                  { title: "GPU", value: product_data?.GPU || "Loading..." },
+                  { title: "Memory", value: product_data?.memory || "Loading..." },
+                  { title: "RAM", value: product_data?.RAM || "Loading..." },
+                  { title: "Graphics", value: product_data?.graphics || "Loading..." },
+                  { title: "OS", value: product_data?.os || "Loading..." },
+                  { title: "Display size", value: product_data?.displaySize || "Loading..." },
+                  { title: "Main camera", value: product_data?.camera || "Loading..." },
+                  { title: "Battery", value: product_data?.battery || "Loading..." },
+                  { title: "Description", value: product_data?.description || "Loading..." },
+                  { title: "Guarantee", value: "1 year from the manufacturer + 31 days from TechX" },
+                ]
+              ) : product_data?.category === "AirPods" ? (
+                [
+                  { title: "Brand", value: product_data?.brand || "Loading..." },
+                  { title: "Model", value: product_data?.model || "Loading..." },
+                  { title: "Color", value: product_data?.color || "Loading..." },
+                  { title: "Processor", value: product_data?.processor || "Loading..." },
+                  { title: "Battery", value: product_data?.battery || "Loading..." },
+                  { title: "Description", value: product_data?.description || "Loading..." },
+                  { title: "Guarantee", value: "1 year from the manufacturer + 31 days from TechX" },
+                ]
+              ) : product_data?.category === "Watch" ? (
+                [
+                  { title: "Brand", value: product_data?.brand || "Loading..." },
+                  { title: "Model", value: product_data?.model || "Loading..." },
+                  { title: "Color", value: product_data?.color || "Loading..." },
+                  { title: "Processor", value: product_data?.processor || "Loading..." },
+                  { title: "CPU", value: product_data?.CPU || "Loading..." },
+                  { title: "GPU", value: product_data?.GPU || "Loading..." },
+                  { title: "Memory", value: product_data?.memory || "Loading..." },
+                  { title: "RAM", value: product_data?.RAM || "Loading..." },
+                  { title: "OS", value: product_data?.os || "Loading..." },
+                  { title: "Display size", value: product_data?.displaySize || "Loading..." },
+                  { title: "Battery", value: product_data?.battery || "Loading..." },
+                  { title: "Description", value: product_data?.description || "Loading..." },
+                  { title: "Guarantee", value: "1 year from the manufacturer + 31 days from TechX" },
+                ]
+              ) : product_data?.category === "Ipad" ? (
+                [
+                  { title: "Brand", value: product_data?.brand || "Loading..." },
+                  { title: "Model", value: product_data?.model || "Loading..." },
+                  { title: "Color", value: product_data?.color || "Loading..." },
+                  { title: "Processor", value: product_data?.processor || "Loading..." },
+                  { title: "CPU", value: product_data?.CPU || "Loading..." },
+                  { title: "GPU", value: product_data?.GPU || "Loading..." },
+                  { title: "Memory", value: product_data?.memory || "Loading..." },
+                  { title: "RAM", value: product_data?.RAM || "Loading..." },
+                  { title: "OS", value: product_data?.os || "Loading..." },
+                  { title: "Display size", value: product_data?.displaySize || "Loading..." },
+                  { title: "Main camera", value: product_data?.camera || "Loading..." },
+                  { title: "Battery", value: product_data?.battery || "Loading..." },
+                  { title: "Description", value: product_data?.description || "Loading..." },
+                  { title: "Guarantee", value: "1 year from the manufacturer + 31 days from TechX" },
+                ]
+              ) : product_data?.category === "Console" ? (
+                [
+                  { title: "Brand", value: product_data?.brand || "Loading..." },
+                  { title: "Model", value: product_data?.model || "Loading..." },
+                  { title: "Color", value: product_data?.color || "Loading..." },
+                  { title: "Processor", value: product_data?.processor || "Loading..." },
+                  { title: "CPU", value: product_data?.CPU || "Loading..." },
+                  { title: "GPU", value: product_data?.GPU || "Loading..." },
+                  { title: "Memory", value: product_data?.memory || "Loading..." },
+                  { title: "RAM", value: product_data?.RAM || "Loading..." },
+                  { title: "OS", value: product_data?.os || "Loading..." },
+                  { title: "Description", value: product_data?.description || "Loading..." },
+                  { title: "Guarantee", value: "1 year from the manufacturer + 31 days from TechX" },
+                ]
+              ) : (
+                [{ title: "No data available", value: ":(" }]
+              )).map((item) => (
+                <div key={item.title} className="flex items-center shadow-lg dark:bg-black rounded-md p-2">
+                  <h6 className="text-black dark:text-white font-medium mr-2">{item.title}:</h6>
                   <p className="text-gray-500">{item.value}</p>
                 </div>
               ))}

@@ -193,3 +193,16 @@ function BreakErrorMessage()  // <-- Break displaying the error window.
 document.getElementById("id-close-success-message").onclick = BreakSuccessMessage;
 document.getElementById("id-close-error-message").onclick = BreakErrorMessage;
 //#endregion 
+
+
+window.electron.receive('ShowReview', () => 
+{
+  menu_toggle.addEventListener("click", () => { navigation.classList.toggle("open"); });
+  list_item[3].classList.add("active");
+
+  DisableContent();
+  HideAllAddProductMenuItems();
+  RecordWhereUserIsNow(3);
+
+  reviews_content.style.display = "flex";
+});
