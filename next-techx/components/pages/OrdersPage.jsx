@@ -72,16 +72,10 @@ const OrdersPage = () => {
         user_sum: CountTotal(),
         stored_array: stored_array,
       };
-<<<<<<< HEAD
       try 
       {
         const response = await fetch("https://techx-server.tech:443/profile/order/CreateOrder", 
         {
-=======
-
-      try {
-        const response = await fetch("https://techx-server.tech:443/Order", {
->>>>>>> 5295f1f4b031b43de5e93b9dbd68e31897756097
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(order_data),
@@ -218,15 +212,6 @@ const OrdersPage = () => {
           </div>
           <div className="w-full md:w-1/3 bg-white  dark:bg-[#1d1d1d] shadow-lg p-6">
             <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
-<<<<<<< HEAD
-            {stored_array.length > 0 ? 
-            (<>
-              <ScrollArea className="h-96 w-full ">
-                {stored_array.map((item, index) => (
-                  <div key={index} className="grid grid-cols-4 items-center gap-4 mt-3">
-                    <div>
-                      <img src={`https://techx-server.tech:443/product/GetImage/${item.img}`} alt="img" className="w-14"/>
-=======
             {stored_array.length > 0 ? (
               <>
                 <ScrollArea className="h-96 w-full ">
@@ -236,7 +221,7 @@ const OrdersPage = () => {
                       className="grid grid-cols-4 items-center gap-4 mt-3">
                       <div>
                         <img
-                          src={`https://techx-server.tech:443/GetImage/${item.img}`}
+                          src={`https://techx-server.tech:443/product/GetImage/${item.img}`}
                           alt="img"
                           className="w-14"
                         />
@@ -259,7 +244,6 @@ const OrdersPage = () => {
                             clip-rule="evenodd"></path>
                         </svg>
                       </div>
->>>>>>> 5295f1f4b031b43de5e93b9dbd68e31897756097
                     </div>
                   ))}
                 </ScrollArea>
