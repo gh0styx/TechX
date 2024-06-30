@@ -30,7 +30,7 @@ const OrdersPage = () => {
           SetUserEmailReadonly(true);
         }
         if (user_data && user_data.phone_number !== "null")
-          SetUserPhone(user_data.delivery_address);
+          SetUserPhone(user_data.phone_number);
         if (user_data && user_data.delivery_address !== "null")
           SetUserDeliveryAddress(user_data.delivery_address);
       } catch (error) {
@@ -72,14 +72,15 @@ const OrdersPage = () => {
         user_sum: CountTotal(),
         stored_array: stored_array,
       };
-      try 
-      {
-        const response = await fetch("https://techx-server.tech:443/profile/order/CreateOrder", 
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(order_data),
-        });
+      try {
+        const response = await fetch(
+          "https://techx-server.tech:443/profile/order/CreateOrder",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(order_data),
+          }
+        );
 
         if (!response.ok) throw new Error("Failed to submit order");
         else {
